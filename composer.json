@@ -11,7 +11,7 @@
     "php": "^7.4 || ^8.0",
     "php-http/httplug": "^2.2",
     "sylius/sylius": "~1.9.0 || ~1.10.0@alpha",
-    "tmconsulting/uniteller-php-sdk": "dev-master"
+    "adexos/uniteller-php-sdk": "dev-master"
   },
   "require-dev": {
     "behat/behat": "^3.6.1",
@@ -61,7 +61,7 @@
     {
       "url": "https://github.com/adexos/uniteller-sdk-php.git",
       "type": "git",
-      "only": ["tmconsulting/uniteller-php-sdk"]
+      "only": ["adexos/uniteller-php-sdk"]
     }
   ],
   "autoload-dev": {

@@ -11,7 +11,7 @@ use Payum\Core\ApiAwareInterface;
 use Payum\Core\ApiAwareTrait;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
-use Tmconsulting\Uniteller\ClientInterface;
+use Adexos\Uniteller\ClientInterface;
 
 abstract class UnitellerApiAware implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
 {

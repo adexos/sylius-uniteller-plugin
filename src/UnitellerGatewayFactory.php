@@ -8,7 +8,6 @@ namespace Adexos\SyliusUnitellerPlugin;
 
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayFactory;
-use Tmconsulting\Uniteller\Client;
 
 final class UnitellerGatewayFactory extends GatewayFactory
 {
@@ -29,7 +28,6 @@ final class UnitellerGatewayFactory extends GatewayFactory
             'shop_id'      => '',
             'login'        => '',
             'password'     => '',
-            'base_uri'     => 'https://wpay.uniteller.ru',
         ];
 
         $config->defaults($config['payum.default_options']);
@@ -37,11 +35,11 @@ final class UnitellerGatewayFactory extends GatewayFactory
 
         $config['payum.api'] = function (ArrayObject $config) {
             $config->validateNotEmpty($config['payum.required_options']);
-            $uniteller = new Client();
-            $uniteller->setShopId($config['shop_id']);
-            $uniteller->setLogin($config['login']);
-            $uniteller->setPassword($config['password']);
-            $uniteller->setBaseUri($config['base_uri']);
+            $uniteller = new \Adexos\Uniteller\Client([
+                'shopId' => $config['shop_id'],
+                'login' => $config['login'],
+                'password' => $config['password']
+            ]);
 
             return $uniteller;
         };

@@ -7,8 +7,11 @@
 namespace Adexos\SyliusUnitellerPlugin\Action;
 
 use Adexos\SyliusUnitellerPlugin\Action\Api\UnitellerApiAware;
+use Adexos\Uniteller\Client;
+use Adexos\Uniteller\Model\Payment;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Core\Reply\HttpPostRedirect;
 use Payum\Core\Reply\HttpRedirect;
 use Payum\Core\Request\Capture;
 use Payum\Uniteller\Action\Api\BaseApiAwareAction;
@@ -22,15 +25,19 @@ class CaptureAction extends UnitellerApiAware
         /** @var Capture $request */
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        if (null === $model['URL_RETURN_OK'] && $request->getToken()) {
-            $model['URL_RETURN_OK'] = $request->getToken()->getAfterUrl();
+        /** @var Payment $payment */
+        $payment = unserialize($model['payment'], ['allowed_classes' => [Payment::class]]);
+
+        if ($request->getToken()) {
+            $payment->setUrlReturnOk($request->getToken()->getAfterUrl());
         }
 
-        /** @var ClientInterface $client */
+        /** @var Client $client */
         $client = $this->api;
-        $uri    = $client->payment($model->toUnsafeArray())->getUri();
-
-        throw new HttpRedirect($uri);
+        $request = $client->payment($payment);
+        $params = [];
+        parse_str($request->getBody()->getContents(), $params);
+        throw new HttpPostRedirect($request->getUri(), $params);
     }
 
     public function supports($request)
