@@ -1,7 +1,7 @@
 {
-  "name": "sylius/plugin-skeleton",
+  "name": "adexos/sylius-uniteller-plugin",
   "type": "sylius-plugin",
-  "description": "Acme example plugin for Sylius.",
+  "description": "Uniteller gateway.",
   "keywords": [
     "sylius",
     "sylius-plugin"
