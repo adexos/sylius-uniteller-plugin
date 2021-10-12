@@ -1,0 +1,7 @@
+services:
+   adexos_sylius_uniteller_plugin.gateway_factory.uniteller:
+        class: Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder
+        arguments:
+            - Adexos\SyliusUnitellerPlugin\UnitellerGatewayFactory
+        tags:
+            - { name: payum.gateway_factory_builder, factory: uniteller }

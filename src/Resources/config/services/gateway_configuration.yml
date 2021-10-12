@@ -1,0 +1,6 @@
+services:
+    adexos_sylius_uniteller_plugin.form.type.uniteller_gateway_configuration:
+        class: Adexos\SyliusUnitellerPlugin\Form\Type\UnitellerGatewayConfigurationType
+        tags:
+            - { name: sylius.gateway_configuration_type, type: uniteller, label: adexos_sylius_uniteller_plugin.ui.uniteller_gateway_label }
+            - { name: form.type }

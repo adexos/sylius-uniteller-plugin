@@ -53,8 +53,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Acme\\SyliusExamplePlugin\\": "src/",
-      "Tests\\Acme\\SyliusExamplePlugin\\": "tests/"
+      "Adexos\\SyliusUnitellerPlugin\\": "src/",
+      "Tests\\Adexos\\SyliusUnitellerPlugin\\": "tests/"
     }
   },
   "repositories": [

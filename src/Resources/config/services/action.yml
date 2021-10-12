@@ -1,0 +1,24 @@
+services:
+  adexos_sylius_uniteller_plugin.payum_action.capture:
+    class: Adexos\SyliusUnitellerPlugin\Action\CaptureAction
+    public: true
+    tags:
+      - { name: payum.action, factory: uniteller, alias: payum.action.capture }
+
+  adexos_sylius_uniteller_plugin.payum_action.notify:
+    class: Adexos\SyliusUnitellerPlugin\Action\NotifyAction
+    public: true
+    tags:
+      - { name: payum.action, factory: uniteller, alias: payum.action.notify }
+
+  adexos_sylius_uniteller_plugin.payum_action.status:
+    class: Adexos\SyliusUnitellerPlugin\Action\StatusAction
+    public: true
+    tags:
+      - { name: payum.action, factory: uniteller, alias: payum.action.status }
+
+  adexos_sylius_uniteller_plugin.payum_action.convert_payment:
+    class: Adexos\SyliusUnitellerPlugin\Action\ConverterPaymentAction
+    public: true
+    tags:
+      - { name: payum.action, factory: uniteller, alias: payum.action.convert_payment }
