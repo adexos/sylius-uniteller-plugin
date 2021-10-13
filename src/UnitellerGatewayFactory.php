@@ -36,7 +36,7 @@ final class UnitellerGatewayFactory extends GatewayFactory
         $config['payum.api'] = function (ArrayObject $config) {
             $config->validateNotEmpty($config['payum.required_options']);
             $uniteller = new \Adexos\Uniteller\Client([
-                'shopId' => $config['shop_id'],
+                'shop_id' => $config['shop_id'],
                 'login' => $config['login'],
                 'password' => $config['password']
             ]);

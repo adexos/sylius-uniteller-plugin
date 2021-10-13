@@ -28,7 +28,9 @@ class CaptureAction extends UnitellerApiAware
         /** @var Payment $payment */
         $payment = unserialize($model['payment'], ['allowed_classes' => [Payment::class]]);
 
+
         if ($request->getToken()) {
+            $payment->setUrlReturnNo($request->getToken()->getTargetUrl());
             $payment->setUrlReturnOk($request->getToken()->getAfterUrl());
         }
 
