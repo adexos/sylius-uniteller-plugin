@@ -1,0 +1,8 @@
+adexos_sylius_uniteller_plugin_notify_action:
+  path: /payment/uniteller/notify
+  methods: ["POST"]
+  defaults:
+    _controller: adexos_sylius_uniteller_plugin.controller.notify:doAction
+
+adexos_sylius_uniteller_plugin_refund:
+  resource: "@PayumBundle/Resources/config/routing/refund.xml"

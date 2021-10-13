@@ -12,7 +12,7 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\GetStatusInterface;
-use Tmconsulting\Uniteller\Order\Status;
+use Adexos\Uniteller\Model\Status;
 
 class StatusAction implements ActionInterface, GatewayAwareInterface
 {
@@ -35,7 +35,7 @@ class StatusAction implements ActionInterface, GatewayAwareInterface
             return;
         }
 
-        switch (Status::resolve($this->getParameter($model, 'Status'))) {
+        switch ($this->getParameter($model, 'Status')) {
             case Status::AUTHORIZED:
                 $request->markAuthorized();
                 break;

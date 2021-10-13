@@ -7,12 +7,13 @@
 namespace Adexos\SyliusUnitellerPlugin\Action;
 
 use Adexos\SyliusUnitellerPlugin\Action\Api\UnitellerApiAware;
+use Adexos\Uniteller\ClientInterface;
+use Adexos\Uniteller\Model\Order;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\GetHttpRequest;
 use Payum\Core\Request\Notify;
-use Tmconsulting\Uniteller\Client;
 
 class NotifyAction extends UnitellerApiAware
 {
@@ -23,11 +24,15 @@ class NotifyAction extends UnitellerApiAware
 
         $this->gateway->execute($httpRequest = new GetHttpRequest);
 
-        /** @var Client $client */
+        /** @var ClientInterface $client */
         $client = $this->api;
 
-        if (! $client->verifyCallbackRequest($httpRequest->request)) {
-            throw new HttpResponse('Notification (callback) signature is invalid.', 400);
+        $order = new Order();
+        $order->setStatus($httpRequest->request['Status'])
+            ->setOrderId($httpRequest->request['Order_ID']);
+
+        if (! $client->isValidOrder($order, $httpRequest->request['Signature'])) {
+            throw new HttpResponse('Notification signature is invalid.', 400);
         }
 
         $model->replace($httpRequest->request);

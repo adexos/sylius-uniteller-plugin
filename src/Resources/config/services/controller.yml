@@ -1,0 +1,7 @@
+services:
+  adexos_sylius_uniteller_plugin.controller.notify:
+    class: Adexos\SyliusUnitellerPlugin\Controller\NotifyController
+    public: true
+    arguments:
+      - "@payum"
+      - "@sylius.repository.payment"

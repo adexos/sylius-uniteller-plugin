@@ -2,4 +2,5 @@ imports:
   - { resource: "services/gateway_configuration.yml" }
   - { resource: "services/gateway_factory.yml" }
   - { resource: "services/action.yml" }
+  - { resource: "services/controller.yml" }
 

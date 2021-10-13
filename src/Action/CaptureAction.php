@@ -12,13 +12,17 @@ use Adexos\Uniteller\Model\Payment;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Reply\HttpPostRedirect;
-use Payum\Core\Reply\HttpRedirect;
 use Payum\Core\Request\Capture;
+use Payum\Core\Security\GenericTokenFactoryAwareInterface;
+use Payum\Core\Security\GenericTokenFactoryAwareTrait;
+use Payum\Core\Security\TokenInterface;
 use Payum\Uniteller\Action\Api\BaseApiAwareAction;
 use Tmconsulting\Uniteller\ClientInterface;
 
-class CaptureAction extends UnitellerApiAware
+class CaptureAction extends UnitellerApiAware implements GenericTokenFactoryAwareInterface
 {
+    use GenericTokenFactoryAwareTrait;
+
     public function execute($request)
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -28,10 +32,18 @@ class CaptureAction extends UnitellerApiAware
         /** @var Payment $payment */
         $payment = unserialize($model['payment'], ['allowed_classes' => [Payment::class]]);
 
+        $token = $request->getToken();
+        if ($token) {
+            $payment->setUrlReturnNo($token->getTargetUrl());
+            $payment->setUrlReturnOk($token->getAfterUrl());
+        }
 
-        if ($request->getToken()) {
-            $payment->setUrlReturnNo($request->getToken()->getTargetUrl());
-            $payment->setUrlReturnOk($request->getToken()->getAfterUrl());
+        if (!isset($model['extraData']) && $token) {
+            $model['extraData'] = [
+                'captureToken' => $token->getHash(),
+                'notifyToken' => $this->generateNotifyToken($token, $model)->getHash(),
+                'refundToken' => $this->generateRefundToken($token, $model)->getHash()
+            ];
         }
 
         /** @var Client $client */
@@ -48,5 +60,15 @@ class CaptureAction extends UnitellerApiAware
             $request instanceof Capture &&
             $request->getModel() instanceof \ArrayAccess
         ;
+    }
+
+    private function generateRefundToken(TokenInterface $token, ArrayObject $model): TokenInterface
+    {
+        return $this->tokenFactory->createRefundToken($token->getGatewayName(), $token->getDetails() ?? $model);
+    }
+
+    private function generateNotifyToken(TokenInterface $token, ArrayObject $model): TokenInterface
+    {
+        return $this->tokenFactory->createNotifyToken($token->getGatewayName(), $token->getDetails() ?? $model);
     }
 }

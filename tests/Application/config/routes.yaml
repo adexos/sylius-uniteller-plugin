@@ -1,0 +1,2 @@
+adexos_sylius_uniteller_plugin:
+  resource: "@AdexosSyliusUnitellerPlugin/Resources/config/routing.yml"
