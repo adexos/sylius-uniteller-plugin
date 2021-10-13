@@ -33,7 +33,13 @@ class NotifyController
         $signature = $request->get('Signature');
 
         /** @var PaymentInterface $payment */
-        $payment = $this->paymentRepository->findOneBy(['order' => $orderId]);
+        $payment = $this->paymentRepository->createQueryBuilder('p')
+            ->innerJoin('p.order', 'o')
+            ->where('o.number = :orderId' )
+            ->setParameter('orderId', $orderId)
+            ->getQuery()
+            ->getOneOrNullResult();
+
         $notifyToken = $payment->getDetails()['extraData']['notifyToken'];
 
         if (null === $token = $this->payum->getTokenStorage()->find($notifyToken)) {
